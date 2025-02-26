@@ -19,49 +19,59 @@ DROP VIEW IF EXISTS q4v;
 -- Question 0
 CREATE VIEW q0(era)
 AS
-  SELECT 1 -- replace this line
+  select max(era) from pitching
 ;
 
 -- Question 1i
 CREATE VIEW q1i(namefirst, namelast, birthyear)
 AS
-  SELECT 1, 1, 1 -- replace this line
+   select namefirst, namelast, birthyear from people where weight > 300;
 ;
 
 -- Question 1ii
 CREATE VIEW q1ii(namefirst, namelast, birthyear)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  select namefirst, namelast, birthyear from people where namefirst like '% %' order by namefirst asc, namelast asc;
 ;
 
 -- Question 1iii
 CREATE VIEW q1iii(birthyear, avgheight, count)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  select birthyear, avg(height), count(*) from people group by birthyear order by birthyear asc;
 ;
 
 -- Question 1iv
 CREATE VIEW q1iv(birthyear, avgheight, count)
 AS
-  SELECT 1, 1, 1 -- replace this line
+  select birthyear, avg(height), count(*) from people group by birthyear having avg(height)>70 order by birthyear asc;
 ;
 
 -- Question 2i
 CREATE VIEW q2i(namefirst, namelast, playerid, yearid)
 AS
-  SELECT 1, 1, 1, 1 -- replace this line
+  SELECT P.namefirst, P.namelast, P.playerid, H.yearid
+  FROM people AS P, halloffame AS H
+  WHERE P.playerid = H.playerid AND H.inducted = 'Y'
+  ORDER BY H.yearid DESC, P.playerid ASC
 ;
 
 -- Question 2ii
 CREATE VIEW q2ii(namefirst, namelast, playerid, schoolid, yearid)
 AS
-  SELECT 1, 1, 1, 1, 1 -- replace this line
+    SELECT P.namefirst, P.namelast, P.playerid, S.schoolid, H.yearid
+    FROM people AS P, CollegePlaying AS C, schools AS S, halloffame AS H
+    WHERE P.playerid = H.playerid AND H.inducted = 'Y' AND S.schoolState = 'CA' AND C.playerid = P.playerid AND C.schoolid = S.schoolid
+    ORDER BY H.yearid DESC, S.schoolid ASC, P.playerid ASC
 ;
 
 -- Question 2iii
 CREATE VIEW q2iii(playerid, namefirst, namelast, schoolid)
 AS
-  SELECT 1, 1, 1, 1 -- replace this line
+    SELECT DISTINCT P.playerid, P.namefirst, P.namelast, C.schoolid
+    FROM people AS P
+    INNER JOIN halloffame AS H ON P.playerid = H.playerid AND H.inducted = 'Y'
+    LEFT OUTER JOIN CollegePlaying AS C ON P.playerid = C.playerid
+    ORDER BY P.playerid DESC, C.schoolid ASC
 ;
 
 -- Question 3i
